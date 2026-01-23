@@ -28,8 +28,14 @@ jobs:
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Crop the SVG to remove bottom progress bar area
+      - name: crop bottom area
+        run: |
+          # Change viewBox height from default to cropped version
+          sed -i 's/viewBox="0 0 \([0-9]*\) [0-9]*"/viewBox="0 0 \1 100"/' dist/github-contribution-grid-snake.svg
+          sed -i 's/viewBox="0 0 \([0-9]*\) [0-9]*"/viewBox="0 0 \1 100"/' dist/github-contribution-grid-snake-dark.svg
           
-      # Don't modify the SVGs - just deploy them as-is
       - name: push github-contribution-grid-snake.svg to the output branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
