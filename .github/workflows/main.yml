@@ -33,5 +33,6 @@ jobs:
         with:
           target_branch: output
           build_dir: dist
+          keep_history: false   # delete old files before pushing
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
