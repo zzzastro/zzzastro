@@ -31,8 +31,8 @@ jobs:
       # remove the progress bar (elements with class "u") from the SVGs
       - name: remove progress bar
         run: |
-          sed -i '/class="u/d' dist/github-contribution-grid-snake.svg
-          sed -i '/class="u/d' dist/github-contribution-grid-snake-dark.svg
+          sed -i '/class="u"/d' dist/github-contribution-grid-snake.svg
+          sed -i '/class="u"/d' dist/github-contribution-grid-snake-dark.svg
           
       # push the content of <build_dir> to a branch
       # the content will be available at https://raw.githubusercontent.com/<github_user>/<repository>/<target_branch>/<file> , or as github page
