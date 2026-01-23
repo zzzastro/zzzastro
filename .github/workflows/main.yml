@@ -15,27 +15,38 @@ on:
 
 jobs:
   generate:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     timeout-minutes: 10
     
     steps:
-      # generates a snake game from a github user (<github_user_name>) contributions graph, output a svg animation at <svg_out_path>
+      # Checkout the repository to access files
+      - name: checkout
+        uses: actions/checkout@v3
+
+      # generates a snake game from a github user contributions graph
       - name: generate github-contribution-grid-snake.svg
         uses: Platane/snk/svg-only@v3
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
-            dist/github-contribution-grid-snake.svg?palette=github-light
+            dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # remove the progress bar (elements with class "u") from the SVGs
+      # remove the progress bar from the SVGs - more aggressive approach
       - name: remove progress bar
         run: |
-          sed -i '/class="u"/d' dist/github-contribution-grid-snake.svg
-          sed -i '/class="u"/d' dist/github-contribution-grid-snake-dark.svg
+          # Remove all elements with class "u" and the progress container
+          sed -i '/<g class="u"/,/<\/g>/d' dist/github-contribution-grid-snake.svg
+          sed -i '/<g class="u"/,/<\/g>/d' dist/github-contribution-grid-snake-dark.svg
+          # Also try removing by style if the above doesn't work
+          sed -i '/\.u{/,/}/d' dist/github-contribution-grid-snake.svg
+          sed -i '/\.u{/,/}/d' dist/github-contribution-grid-snake-dark.svg
           
       # push the content of <build_dir> to a branch
-      # the content will be available at https://raw.githubusercontent.com/<github_user>/<repository>/<target_branch>/<file> , or as github page
       - name: push github-contribution-grid-snake.svg to the output branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
