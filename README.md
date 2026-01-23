@@ -1,5 +1,3 @@
-# Hi there, I'm Ashish! 👋
-
 <div align="center">
   <img src="https://github.com/zzzastro/zzzastro/blob/output/github-contribution-grid-snake.svg" alt="Snake Game" />
 </div>
